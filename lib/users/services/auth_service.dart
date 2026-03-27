@@ -1,7 +1,12 @@
-import '../models/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 /// Authentication service for user authentication operations
 class AuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   // Singleton instance
   static final AuthService _instance = AuthService._internal();
 
@@ -11,81 +16,99 @@ class AuthService {
 
   AuthService._internal();
 
-  // Mock current user
-  UserModel? _currentUser;
-
-  /// Get current logged-in user
-  UserModel? get currentUser => _currentUser;
-
-  /// Check if user is authenticated
-  bool get isAuthenticated => _currentUser != null;
-
-  /// Login with email and password
-  Future<UserModel?> loginWithEmail(String email, String password) async {
-    try {
-      // Simulate API call
-      await Future.delayed(const Duration(milliseconds: 900));
-
-      // Mock login success
-      _currentUser = UserModel(
-        id: '1',
-        name: 'User',
-        email: email,
-        createdAt: DateTime.now(),
-      );
-
-      return _currentUser;
-    } catch (e) {
-      print('Login error: $e');
-      return null;
-    }
+  // Create user with email & password and create Firestore profile
+  Future<UserCredential> registerWithEmail({
+    required String email,
+    required String password,
+    required String name,
+  }) async {
+    final cred = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    await _createOrUpdateUserDoc(cred.user!, name: name);
+    return cred;
   }
 
-  /// Register new user
-  Future<UserModel?> register(
-    String name,
-    String email,
-    String password,
-  ) async {
-    try {
-      // Simulate API call
-      await Future.delayed(const Duration(milliseconds: 900));
-
-      // Mock registration success
-      _currentUser = UserModel(
-        id: '1',
-        name: name,
-        email: email,
-        createdAt: DateTime.now(),
-      );
-
-      return _currentUser;
-    } catch (e) {
-      print('Registration error: $e');
-      return null;
-    }
+  // Sign in with email & password
+  Future<UserCredential> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    final cred = await _auth.signInWithEmailAndPassword(email: email, password: password);
+    await _createOrUpdateUserDoc(cred.user!);
+    return cred;
   }
 
-  /// Logout current user
-  Future<void> logout() async {
-    try {
-      // Simulate API call
-      await Future.delayed(const Duration(milliseconds: 500));
-      _currentUser = null;
-    } catch (e) {
-      print('Logout error: $e');
-    }
+  // Send password reset email
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
   }
 
-  /// Reset password
-  Future<bool> resetPassword(String email) async {
-    try {
-      // Simulate API call
-      await Future.delayed(const Duration(milliseconds: 1200));
-      return true;
-    } catch (e) {
-      print('Password reset error: $e');
-      return false;
-    }
+  // Google Sign-In (web and mobile)
+  Future<UserCredential?> signInWithGoogle() async {
+    // On web, GoogleSignIn() works differently; this implementation works on mobile and web
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) return null; // user cancelled
+
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final userCred = await _auth.signInWithCredential(credential);
+    await _createOrUpdateUserDoc(userCred.user!, name: googleUser.displayName);
+    return userCred;
   }
+
+  // Sign out
+  Future<void> signOut() async {
+    try {
+      await GoogleSignIn().signOut();
+    } catch (_) {}
+    await _auth.signOut();
+  }
+
+  // Helper: create or update Firestore user document
+  Future<void> _createOrUpdateUserDoc(User user, {String? name}) async {
+    final docRef = _firestore.collection('users').doc(user.uid);
+    final snapshot = await docRef.get();
+
+    final Map<String, Object?> data = {
+      'email': user.email,
+      'name': name ?? user.displayName ?? '',
+      'lastSeen': FieldValue.serverTimestamp(),
+    };
+
+    if (!snapshot.exists) {
+      data['role'] = 'user';
+      data['createdAt'] = FieldValue.serverTimestamp();
+    }
+
+    await docRef.set(data, SetOptions(merge: true));
+  }
+
+  // Promote a user to admin by UID
+  Future<void> promoteToAdminByUid(String uid) async {
+    final docRef = _firestore.collection('users').doc(uid);
+    await docRef.set({'role': 'admin'}, SetOptions(merge: true));
+  }
+
+  // Promote a user to admin by email (finds user doc by email)
+  Future<void> promoteToAdminByEmail(String email) async {
+    final query = await _firestore.collection('users').where('email', isEqualTo: email).limit(1).get();
+    if (query.docs.isEmpty) throw Exception('User with email not found in Firestore');
+    final uid = query.docs.first.id;
+    await promoteToAdminByUid(uid);
+  }
+
+  // Fetch user role
+  Future<String> getUserRole(String uid) async {
+    final doc = await _firestore.collection('users').doc(uid).get();
+    if (!doc.exists) return 'user';
+    return doc.data()?['role'] ?? 'user';
+  }
+
+  // Stream of auth changes
+  Stream<User?> authStateChanges() => _auth.authStateChanges();
+
+  User? get currentUser => _auth.currentUser;
 }

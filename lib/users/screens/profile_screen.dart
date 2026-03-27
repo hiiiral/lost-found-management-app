@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 
 import '../models/user_model.dart';
@@ -28,13 +29,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _user = _authService.currentUser ??
-        UserModel(
-          id: 'guest-user',
-          name: 'Campus User',
-          email: 'user@campus.edu',
-          createdAt: DateTime.now(),
-        );
+    final fb_auth.User? firebaseUser = _authService.currentUser;
+    if (firebaseUser != null) {
+      _user = UserModel(
+        id: firebaseUser.uid,
+        name: firebaseUser.displayName ?? 'Campus User',
+        email: firebaseUser.email ?? 'user@campus.edu',
+        createdAt: DateTime.now(),
+      );
+    } else {
+      _user =
+          UserModel(
+            id: 'guest-user',
+            name: 'Campus User',
+            email: 'user@campus.edu',
+            createdAt: DateTime.now(),
+          );
+    }
     _loadSavedProfile();
   }
 
@@ -361,7 +372,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _loading = true;
     });
 
-    await _authService.logout();
+    await _authService.signOut();
 
     if (!mounted) {
       return;
