@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "450593921560",
+    "project_id": "lost-found-cms-43ca3",
+    "storage_bucket": "lost-found-cms-43ca3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450593921560:android:c08b53adeda7e13a08416d",
+        "android_client_info": {
+          "package_name": "com.example.lost_found_cms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB26gHfdlZYweSvOnbWFm6FTHTbz0N_JBk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
