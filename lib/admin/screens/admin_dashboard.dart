@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lost_app_management/admin/screens/admin_profile_screen.dart';
-import 'package:lost_app_management/admin/screens/admin_settings_screen.dart';
-import 'package:lost_app_management/admin/screens/manage_claims_screen.dart';
-import 'package:lost_app_management/admin/screens/manage_items_screen.dart';
-import 'package:lost_app_management/admin/screens/send_alerts_screen.dart';
-import 'package:lost_app_management/admin/screens/verification_screen.dart';
-import 'package:lost_app_management/admin/screens/widgets/admin_item_card.dart';
-import 'package:lost_app_management/admin/widgets/admin_bottom_nav.dart';
-import 'package:lost_app_management/admin/screens/widgets/approval_buttons.dart';
+import 'package:lost_found_management_app/admin/screens/admin_profile_screen.dart';
+import 'package:lost_found_management_app/admin/screens/admin_settings_screen.dart';
+import 'package:lost_found_management_app/admin/screens/manage_claims_screen.dart';
+import 'package:lost_found_management_app/admin/screens/manage_items_screen.dart';
+import 'package:lost_found_management_app/admin/screens/send_alerts_screen.dart';
+import 'package:lost_found_management_app/admin/screens/verification_screen.dart';
+import 'package:lost_found_management_app/admin/widgets/admin_item_card.dart';
+import 'package:lost_found_management_app/admin/widgets/admin_bottom_nav.dart';
+import 'package:lost_found_management_app/admin/widgets/approval_buttons.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -102,9 +102,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                       Text(
                         'Notifications',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF102A43),
-                        ),
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF102A43),
+                            ),
                       ),
                       TextButton(
                         onPressed: () {
@@ -124,7 +124,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                             alignment: Alignment.topLeft,
                             child: Text(
                               'No new notifications.',
-                              style: Theme.of(context).textTheme.bodyMedium
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
                                   ?.copyWith(color: const Color(0xFF6B7C93)),
                             ),
                           )
@@ -527,16 +529,16 @@ class _StatCardState extends State<_StatCard> {
           Text(
             widget.value,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF102A43),
-            ),
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF102A43),
+                ),
           ),
           Text(
             widget.title,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF486581),
-              fontWeight: FontWeight.w600,
-            ),
+                  color: const Color(0xFF486581),
+                  fontWeight: FontWeight.w600,
+                ),
           ),
         ],
       ),
@@ -581,9 +583,9 @@ class _ActionCardState extends State<_ActionCard> {
                 child: Text(
                   widget.title,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF102A43),
-                  ),
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF102A43),
+                      ),
                 ),
               ),
             ],

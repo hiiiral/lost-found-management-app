@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'users/screens/home/dashboard_screen.dart';
 import 'users/screens/forgot_password_screen.dart';
 import 'users/screens/home/home_screen.dart';
@@ -8,7 +10,11 @@ import 'users/screens/profile_screen.dart';
 import 'users/screens/register_screen.dart';
 import 'users/screens/home/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

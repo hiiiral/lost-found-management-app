@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lost_app_management/admin/screens/admin_dashboard.dart';
-import 'package:lost_app_management/admin/screens/admin_profile_screen.dart';
-import 'package:lost_app_management/admin/screens/admin_settings_screen.dart';
-import 'package:lost_app_management/admin/screens/manage_items_screen.dart';
+import 'package:lost_found_management_app/admin/screens/admin_dashboard.dart';
+import 'package:lost_found_management_app/admin/screens/admin_profile_screen.dart';
+import 'package:lost_found_management_app/admin/screens/admin_settings_screen.dart';
+import 'package:lost_found_management_app/admin/screens/manage_items_screen.dart';
 
 class AdminBottomNav extends StatefulWidget {
   const AdminBottomNav({super.key, required this.currentIndex});

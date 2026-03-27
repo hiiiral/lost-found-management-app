@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lost_app_management/admin/widgets/admin_bottom_nav.dart';
+import 'package:lost_found_management_app/admin/widgets/admin_bottom_nav.dart';
 
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});

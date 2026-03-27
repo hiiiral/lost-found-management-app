@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lost_app_management/admin/widgets/admin_bottom_nav.dart';
-import 'package:lost_app_management/admin/screens/widgets/approval_buttons.dart';
+import 'package:lost_found_management_app/admin/widgets/admin_bottom_nav.dart';
+import 'package:lost_found_management_app/admin/widgets/approval_buttons.dart';
 
 class ManageClaimsScreen extends StatefulWidget {
   const ManageClaimsScreen({super.key});
@@ -65,8 +65,7 @@ class _ManageClaimsScreenState extends State<ManageClaimsScreen> {
 
     return List<int>.generate(_claims.length, (index) => index).where((index) {
       final claim = _claims[index];
-      final matchesSearch =
-          query.isEmpty ||
+      final matchesSearch = query.isEmpty ||
           claim.claimant.toLowerCase().contains(query) ||
           claim.itemName.toLowerCase().contains(query) ||
           claim.proof.toLowerCase().contains(query);
@@ -163,17 +162,17 @@ class _ManageClaimsScreenState extends State<ManageClaimsScreen> {
               Text(
                 'Proof Details',
                 style: Theme.of(dialogContext).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF102A43),
-                ),
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF102A43),
+                    ),
               ),
               const SizedBox(height: 6),
               Text(
                 claim.proof,
                 style: Theme.of(dialogContext).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF486581),
-                  height: 1.35,
-                ),
+                      color: const Color(0xFF486581),
+                      height: 1.35,
+                    ),
               ),
             ],
           ),
@@ -478,17 +477,17 @@ class _ClaimSummaryCardState extends State<_ClaimSummaryCard> {
           Text(
             widget.value,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF102A43),
-            ),
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF102A43),
+                ),
           ),
           const SizedBox(height: 4),
           Text(
             widget.title,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF486581),
-              fontWeight: FontWeight.w600,
-            ),
+                  color: const Color(0xFF486581),
+                  fontWeight: FontWeight.w600,
+                ),
           ),
         ],
       ),
@@ -563,16 +562,16 @@ class _ClaimTileState extends State<_ClaimTile> {
                     Text(
                       widget.claimant,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF102A43),
-                      ),
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF102A43),
+                          ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Requested: ${widget.itemName}',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF486581),
-                      ),
+                            color: const Color(0xFF486581),
+                          ),
                     ),
                   ],
                 ),
@@ -611,8 +610,8 @@ class _ClaimTileState extends State<_ClaimTile> {
                 child: Text(
                   widget.requestTime,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: const Color(0xFF829AB1),
-                  ),
+                        color: const Color(0xFF829AB1),
+                      ),
                 ),
               ),
               SizedBox(
